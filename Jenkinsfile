@@ -1,21 +1,11 @@
 pipeline {
     agent any
 
-    tools {
-        nodejs 'Node18'
-    }
-
     stages {
 
-        stage('Install Dependencies') {
+        stage('Checkout Code') {
             steps {
-                sh 'npm install'
-            }
-        }
-
-        stage('Build React App') {
-            steps {
-                sh 'npm run build'
+                checkout scm
             }
         }
 
