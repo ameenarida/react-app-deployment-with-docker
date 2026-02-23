@@ -11,6 +11,20 @@ pipeline {
                 sh 'docker build -t ameenarida/react-docker-app .'
             }
         }
+        stage('Push to DockerHub') {
+    steps {
+        withCredentials([usernamePassword(
+            credentialsId: 'dockerhub-creds',
+            usernameVariable: 'DOCKER_USER',
+            passwordVariable: 'DOCKER_PASS'
+        )]) {
+            sh '''
+            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+            docker push ameenarida/react-docker-app
+            '''
+        }
+    }
+}
         stage('Run Docker Container') {
             steps {
                 sh 'docker stop react-container || true'
